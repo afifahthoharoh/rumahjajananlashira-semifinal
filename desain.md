@@ -9,9 +9,11 @@ Dokumen ini mendokumentasikan seluruh spesifikasi desain, sistem identitas visua
 
 | Akses | Keterangan & URL |
 |---|---|
+| **🐙 GitHub Repository** | [github.com/afifahthoharoh/rumahjajananlashira-semifinal](https://github.com/afifahthoharoh/rumahjajananlashira-semifinal) |
+| **✨ Google AI Studio / IDX** | [Import Langsung ke Google Project IDX / AI Studio](https://idx.google.com/import?url=https://github.com/afifahthoharoh/rumahjajananlashira-semifinal) |
+| **🌐 Public Web Live** | [https://afifahthoharoh.github.io/rumahjajananlashira-semifinal/](https://afifahthoharoh.github.io/rumahjajananlashira-semifinal/) |
 | **🎨 Webflow Design Project** | [Buka Proyek Desain Webflow](https://webflow.com/design/rumah-jajan-alshaira-dashboard?utm_medium=project_link&utm_source=designer&utm_content=rumah-jajan-alshaira-dashboard&workflow=comment&pageId=6a9bb6a09f3a062c2d744c82) |
 | **💻 Local Development Server** | [http://localhost:3000/](http://localhost:3000/) *(Port: 3000)* |
-| **🌐 Local Network IP** | `http://192.168.1.21:3000/` |
 | **📦 Repository Workspace** | [`rumahjajananlashira-semifinal`](file:///f:/FOLDER%20AFIFAH/Antigravity%20Projects/rumahjajananlashira-semifinal) |
 
 ---
