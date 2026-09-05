@@ -499,6 +499,61 @@ export const PosSalesModule: React.FC = () => {
             </button>
           </div>
 
+          {/* Quick Cash Presets & Change Calculation when TUNAI is selected */}
+          {paymentMethod === 'TUNAI' && (
+            <div className="p-3 bg-[#FAF7F5] rounded-xl border border-[#F0E6E5] space-y-2.5 text-xs animate-in fade-in duration-150">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-stone-700">Uang Diterima:</span>
+                <div className="flex items-center gap-1">
+                  <span className="text-stone-400 font-mono">Rp</span>
+                  <input
+                    type="number"
+                    value={cashGiven || ''}
+                    onChange={(e) => setCashGiven(Number(e.target.value) || 0)}
+                    className="w-28 text-right px-2 py-1 bg-white border border-[#F0E6E5] rounded-lg font-mono font-bold text-stone-900 outline-none focus:border-[#991B1B]"
+                  />
+                </div>
+              </div>
+
+              {/* Preset Buttons */}
+              <div className="flex flex-wrap gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setCashGiven(grandTotal)}
+                  className="px-2 py-1 bg-white hover:bg-stone-100 border border-stone-200 rounded-lg text-[10px] font-bold text-stone-700 transition"
+                >
+                  Uang Pas
+                </button>
+                {[50000, 100000, 200000].map((nominal) => (
+                  <button
+                    key={nominal}
+                    type="button"
+                    onClick={() => setCashGiven(nominal)}
+                    className={`px-2 py-1 rounded-lg text-[10px] font-bold font-mono transition border ${
+                      cashGiven === nominal
+                        ? 'bg-[#991B1B] text-white border-[#991B1B]'
+                        : 'bg-white hover:bg-stone-100 text-stone-700 border-stone-200'
+                    }`}
+                  >
+                    {(nominal / 1000).toLocaleString('id-ID')}k
+                  </button>
+                ))}
+              </div>
+
+              {/* Change (Kembalian) Calculation */}
+              <div className="flex items-baseline justify-between pt-1.5 border-t border-[#F0E6E5]">
+                <span className="font-bold text-stone-600">Kembalian:</span>
+                <span
+                  className={`font-mono font-black text-sm tabular-nums ${
+                    cashGiven - grandTotal >= 0 ? 'text-emerald-600' : 'text-rose-600'
+                  }`}
+                >
+                  Rp {Math.max(0, cashGiven - grandTotal).toLocaleString('id-ID')}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Big Checkout Button (matching screenshot 1) */}
           <button
             disabled={cart.length === 0}

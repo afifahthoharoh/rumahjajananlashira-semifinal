@@ -243,12 +243,25 @@ const MainLayout: React.FC = () => {
             </button>
 
             <button
-              onClick={() => setActiveTab('pos')}
-              className="text-left group transition"
+              onClick={() => setActiveTab('dashboard')}
+              className="text-left group transition flex items-center gap-2.5 focus:outline-none"
             >
-              <h1 className="text-base sm:text-lg font-black text-[#991B1B] tracking-tight leading-none">
-                RumahJajananLashira
-              </h1>
+              <div className="w-8.5 h-8.5 rounded-xl bg-gradient-to-br from-[#E87373] to-[#991B1B] text-white flex items-center justify-center shadow-xs flex-shrink-0 group-hover:scale-105 transition-transform">
+                <Store className="w-4.5 h-4.5" />
+              </div>
+              <div className="min-w-0 leading-tight">
+                <div className="flex items-baseline gap-1.5">
+                  <h1 className="text-sm sm:text-base font-extrabold text-[#991B1B] tracking-tight leading-none">
+                    Rumah Jajan Alshaira
+                  </h1>
+                  <span className="text-[11px] font-semibold text-stone-500 tracking-normal leading-none">
+                    kartika
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400 font-medium tracking-widest uppercase mt-0.5 leading-none">
+                  by haber group
+                </p>
+              </div>
             </button>
           </div>
 
@@ -413,38 +426,40 @@ const MainLayout: React.FC = () => {
             <button
               id="btn-role-guide"
               onClick={() => setShowRoleGuideModal(true)}
-              className="p-2 rounded-full text-stone-600 hover:bg-[#FAF7F5] transition active:scale-95"
+              className="p-2 rounded-full text-stone-600 hover:bg-[#FAF7F5] border border-transparent hover:border-[#F0E6E5] transition active:scale-95"
               title={t.header.sopGuide}
             >
               <HelpCircle className="w-4 h-4 text-stone-600" />
             </button>
 
-            {/* 9-Dot Grid App/Role Switcher Trigger */}
-            <button
-              id="btn-role-grid"
-              onClick={() => setShowUserMenu(!showUserMenu)}
-              className="p-2 rounded-full text-stone-600 hover:bg-[#FAF7F5] transition active:scale-95"
-              title={t.header.switchRole}
-            >
-              <Grid className="w-4 h-4 text-stone-600" />
-            </button>
-
-            {/* Profile Avatar Button */}
+            {/* Profile & Role Switcher Pill */}
             <div className="relative">
               <button
                 id="btn-user-profile-menu"
                 onClick={() => setShowUserMenu(!showUserMenu)}
-                className="w-8 h-8 rounded-full bg-[#E57373] text-white font-bold flex items-center justify-center text-xs shadow-xs hover:ring-2 hover:ring-[#991B1B]/40 transition overflow-hidden"
+                className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full bg-[#FAF7F5] hover:bg-[#F5ECE9] border border-[#F0E6E5] transition text-left active:scale-95"
+                title="Profil Pengguna & Ganti Peran"
               >
-                {currentUser.avatarUrl ? (
-                  <img
-                    src={currentUser.avatarUrl}
-                    alt={currentUser.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  currentUser.name.slice(0, 1)
-                )}
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#E87373] to-[#991B1B] text-white font-bold flex items-center justify-center text-xs shadow-xs overflow-hidden flex-shrink-0">
+                  {currentUser.avatarUrl ? (
+                    <img
+                      src={currentUser.avatarUrl}
+                      alt={currentUser.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    currentUser.name.slice(0, 1)
+                  )}
+                </div>
+                <div className="hidden sm:block text-left leading-none">
+                  <span className="block text-xs font-bold text-stone-900 truncate max-w-[90px]">
+                    {currentUser.name.split(' ')[0]}
+                  </span>
+                  <span className="block text-[9px] font-extrabold text-[#991B1B] uppercase tracking-wider mt-0.5">
+                    {currentUser.role}
+                  </span>
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-stone-400" />
               </button>
 
               {showUserMenu && (

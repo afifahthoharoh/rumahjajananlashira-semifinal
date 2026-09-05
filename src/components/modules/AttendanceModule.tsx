@@ -69,34 +69,34 @@ export const AttendanceModule: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header & Quick Clock In Card */}
-      <div className="bg-gradient-to-r from-red-700 to-rose-600 rounded-2xl p-6 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/20 text-xs font-bold mb-2">
-            <Clock className="w-3.5 h-3.5 text-amber-300" />
-            MODUL 14: Rekapitulasi Presensi GPS & Ceklis Realtime
+      <div className="bg-white rounded-2xl border border-[#F0E6E5] p-5 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#FDF2F2] text-xs font-extrabold text-[#991B1B] border border-red-100">
+            <Clock className="w-3.5 h-3.5 text-[#991B1B]" />
+            <span>Rekapitulasi Presensi GPS & Ceklis Realtime</span>
           </div>
-          <h2 className="text-xl font-black">
+          <h2 className="text-lg sm:text-xl font-black text-stone-900">
             Presensi Online Cabang: {currentUser.branchName}
           </h2>
-          <p className="text-red-100 text-xs mt-0.5">
+          <p className="text-stone-500 text-xs max-w-2xl leading-relaxed">
             Staf melakukan check-in dan check-out shift kerja secara langsung via konfirmasi ceklis jam realtime & validasi batas jarak maksimal 2 meter dari kantor toko.
           </p>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2.5 flex-shrink-0">
           <button
             onClick={() => handleOpenAbsen(false)}
-            className="px-4 py-2.5 bg-white text-red-700 font-extrabold text-xs rounded-xl shadow hover:bg-red-50 transition active:scale-95 flex items-center gap-1.5"
+            className="px-4 py-2.5 bg-[#991B1B] hover:bg-[#881337] text-white font-extrabold text-xs rounded-xl shadow-xs transition active:scale-95 flex items-center gap-1.5"
           >
-            <CheckSquare className="w-4 h-4 text-red-600" />
-            Absen Masuk (Clock In)
+            <CheckSquare className="w-4 h-4 text-white" />
+            <span>Absen Masuk (Clock In)</span>
           </button>
           <button
             onClick={() => handleOpenAbsen(true)}
-            className="px-4 py-2.5 bg-red-900/80 hover:bg-red-900 text-white font-bold text-xs rounded-xl border border-red-400/40 transition active:scale-95 flex items-center gap-1.5"
+            className="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-xs rounded-xl border border-stone-200 transition active:scale-95 flex items-center gap-1.5"
           >
-            <Clock className="w-4 h-4 text-amber-300" />
-            Absen Pulang (Clock Out)
+            <Clock className="w-4 h-4 text-stone-600" />
+            <span>Absen Pulang (Clock Out)</span>
           </button>
         </div>
       </div>
@@ -282,7 +282,7 @@ export const AttendanceModule: React.FC = () => {
               </button>
               <button
                 onClick={handleConfirmAttendance}
-                className="py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl text-xs shadow flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer"
+                className="py-2.5 bg-[#991B1B] hover:bg-[#881337] text-white font-bold rounded-xl text-xs shadow-xs flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 Submit Absen

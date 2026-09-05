@@ -31,6 +31,7 @@ import {
   LogOut,
   Plus,
   Compass,
+  X,
 } from 'lucide-react';
 
 export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({
@@ -301,46 +302,62 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({
         isOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      {/* Brand Header */}
-      <div className="p-4 border-b border-[#F0E6E5] flex items-center gap-3">
-        <div className="w-10 h-10 rounded-2xl bg-[#E87373] text-white flex items-center justify-center shadow-xs flex-shrink-0">
-          <Store className="w-5 h-5" />
+      {/* Mobile Drawer Top Bar with Close Button */}
+      {onClose && (
+        <div className="p-3 border-b border-[#F0E6E5] flex md:hidden items-center justify-between bg-[#FAF7F5]">
+          <span className="text-xs font-bold text-stone-700 uppercase tracking-wider">
+            Menu Navigasi
+          </span>
+          <button
+            onClick={onClose}
+            className="p-1.5 text-stone-500 hover:text-stone-800 hover:bg-stone-200/60 rounded-lg transition"
+            aria-label="Tutup menu"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
-        <div className="min-w-0 flex-1">
-          <h1 className="font-extrabold text-sm text-stone-900 leading-tight tracking-tight truncate">
-            {t.brand.systemName}
-          </h1>
-          <p className="text-[11px] text-stone-500 font-medium truncate">
-            {t.brand.name}
-          </p>
-        </div>
-      </div>
+      )}
 
-      {/* Role Badge Indicator */}
-      <div className="px-4 py-2 bg-[#FAF7F5] border-b border-[#F0E6E5] flex items-center justify-between">
-        <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider">
-          Role:
-        </span>
-        <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#FDF2F2] text-[#991B1B] border border-red-100">
-          {currentUser.role}
-        </span>
+      {/* Active Session / Role Context Card (Replaces Redundant Brand Header) */}
+      <div className="p-3.5 border-b border-[#F0E6E5] bg-gradient-to-b from-[#FAF7F5] to-white">
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse flex-shrink-0" />
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-stone-500">
+                Sesi Aktif
+              </span>
+            </div>
+            <p className="font-extrabold text-xs text-stone-900 truncate mt-0.5">
+              {currentUser.name}
+            </p>
+            <p className="text-[10px] text-stone-500 truncate font-medium">
+              {currentUser.branchName}
+            </p>
+          </div>
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-stone-100 text-stone-700 border border-stone-200/80 flex-shrink-0">
+            {currentUser.role}
+          </span>
+        </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto px-3 py-3 space-y-3">
-        {/* + New Transaction CTA Button (Kasir & Store Admins & Owner) */}
+      <div className="flex-1 overflow-y-auto px-4 py-1 space-y-2">
+        {/* Primary CTA: + Transaksi Baru isolated with vertical margins my-4 & h-11 */}
         {(currentUser.role === 'KASIR' || currentUser.role === 'ADMIN_CABANG' || currentUser.role === 'OWNER') && (
-          <button
-            id="btn-new-transaction"
-            onClick={() => handleNavClick('pos')}
-            className="w-full py-2.5 px-4 bg-[#991B1B] hover:bg-[#881337] active:scale-[0.98] text-white text-xs font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition"
-          >
-            <Plus className="w-4 h-4 text-white" />
-            <span>+ {t.nav.newTransaction}</span>
-          </button>
+          <div className="my-4">
+            <button
+              id="btn-new-transaction"
+              onClick={() => handleNavClick('pos')}
+              className="w-full h-11 px-4 bg-[#991B1B] hover:bg-[#881337] active:scale-[0.98] text-white font-bold text-xs rounded-xl shadow-sm flex items-center justify-center gap-2 transition focus:outline-none focus:ring-2 focus:ring-[#991B1B] focus:ring-offset-1"
+            >
+              <Plus className="w-4 h-4 text-white" />
+              <span>+ {t.nav.newTransaction}</span>
+            </button>
+          </div>
         )}
 
-        {/* Primary Role-Tailored Nav Items */}
+        {/* Primary Role-Tailored Nav Items with Tap target py-3 px-3.5 */}
         <nav className="space-y-1">
           {primaryMenuItems.map((item) => {
             const Icon = item.icon;
@@ -351,9 +368,9 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({
                 key={item.id}
                 id={`sidebar-nav-${item.id}`}
                 onClick={() => handleNavClick(item.id)}
-                className={`relative w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition active:scale-[0.99] ${
+                className={`relative w-full flex items-center justify-between px-3.5 py-3 rounded-xl text-xs font-medium transition active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-[#991B1B]/20 ${
                   isActive
-                    ? 'bg-[#FDF2F2] text-[#991B1B] font-bold'
+                    ? 'bg-[#FDF2F2] text-[#991B1B] font-bold shadow-2xs'
                     : 'text-stone-700 hover:bg-stone-50 hover:text-stone-900'
                 }`}
               >
@@ -364,7 +381,7 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({
 
                 <div className="flex items-center gap-3">
                   <Icon
-                    className={`w-4 h-4 ${
+                    className={`w-4.5 h-4.5 ${
                       isActive ? 'text-[#991B1B]' : 'text-stone-500'
                     }`}
                   />
@@ -373,7 +390,7 @@ export const Sidebar: React.FC<{ isOpen?: boolean; onClose?: () => void }> = ({
 
                 {item.badge && (
                   <span
-                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                    className={`text-[10px] px-2 py-0.5 rounded-full font-bold font-mono tabular-nums ${
                       isActive
                         ? 'bg-[#991B1B] text-white'
                         : 'bg-amber-100 text-amber-800'

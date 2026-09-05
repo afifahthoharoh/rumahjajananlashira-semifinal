@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Printer, X, FileText } from 'lucide-react';
 import { StockDistribution } from '../../types';
@@ -16,8 +16,6 @@ export const PrintSuratJalanModal: React.FC<PrintSuratJalanModalProps> = ({
 
   const distribution = propDistribution !== undefined ? propDistribution : selectedDistributionForPrint;
 
-  if (!distribution) return null;
-
   const handleClose = () => {
     if (propOnClose) {
       propOnClose();
@@ -26,22 +24,42 @@ export const PrintSuratJalanModal: React.FC<PrintSuratJalanModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  if (!distribution) return null;
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh]">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
+      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-150">
         {/* Header Bar */}
-        <div className="p-4 bg-red-700 text-white flex items-center justify-between no-print">
+        <div className="p-4 bg-stone-900 text-white flex items-center justify-between no-print">
           <div className="flex items-center gap-2">
-            <FileText className="w-5 h-5 text-white" />
+            <FileText className="w-5 h-5 text-amber-300" />
             <h3 className="font-bold text-sm">Surat Jalan Distribusi Barang (Dokumen Resmi)</h3>
           </div>
           <button
             onClick={handleClose}
-            className="p-1 hover:bg-red-800 rounded-lg text-white/80 hover:text-white"
+            className="p-1 hover:bg-stone-800 rounded-lg text-stone-300 hover:text-white transition focus:outline-none focus:ring-1 focus:ring-stone-400"
+            aria-label="Tutup"
           >
             <X className="w-5 h-5" />
           </button>
@@ -49,14 +67,15 @@ export const PrintSuratJalanModal: React.FC<PrintSuratJalanModalProps> = ({
 
         {/* Official Printable Surat Jalan Document */}
         <div className="p-8 overflow-y-auto bg-stone-50 text-stone-900">
-          <div className="bg-white p-8 rounded-xl shadow border border-stone-300 font-sans space-y-6">
+          <div className="bg-white p-8 rounded-xl shadow-xs border border-stone-300 font-sans space-y-6 tabular-nums">
             {/* Header Document */}
-            <div className="flex justify-between items-start border-b-2 border-red-600 pb-4">
+            <div className="flex justify-between items-start border-b-2 border-[#991B1B] pb-4">
               <div>
-                <h1 className="text-xl font-extrabold text-red-700 uppercase tracking-wide">
-                  RUMAH JAJANAN LASHIRA
+                <h1 className="text-xl font-extrabold text-[#991B1B] uppercase tracking-wide">
+                  RUMAH JAJAN ALSHAIRA
                 </h1>
-                <p className="text-xs text-stone-600 font-medium">
+                <p className="text-[10px] text-slate-500 uppercase tracking-widest font-medium">by haber group</p>
+                <p className="text-xs text-stone-600 font-medium mt-0.5">
                   Produsen Snack Makanan Ringan Berkualitas Tinggi
                 </p>
                 <p className="text-xs text-stone-500">

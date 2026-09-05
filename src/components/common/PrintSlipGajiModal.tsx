@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Printer, X, Banknote } from 'lucide-react';
 import { PayrollRecord } from '../../types';
@@ -16,8 +16,6 @@ export const PrintSlipGajiModal: React.FC<PrintSlipGajiModalProps> = ({
 
   const payroll = propPayroll !== undefined ? propPayroll : selectedPayrollForPrint;
 
-  if (!payroll) return null;
-
   const handleClose = () => {
     if (propOnClose) {
       propOnClose();
@@ -25,6 +23,18 @@ export const PrintSlipGajiModal: React.FC<PrintSlipGajiModalProps> = ({
       setSelectedPayrollForPrint(null);
     }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  if (!payroll) return null;
 
   const handlePrint = () => {
     window.print();
@@ -50,17 +60,25 @@ export const PrintSlipGajiModal: React.FC<PrintSlipGajiModalProps> = ({
     totalLateDeductions + deductions;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh]">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
+      <div className="bg-white rounded-2xl shadow-2xl max-w-xl w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-150">
         {/* Header Bar */}
-        <div className="p-4 bg-red-700 text-white flex items-center justify-between no-print">
+        <div className="p-4 bg-stone-900 text-white flex items-center justify-between no-print">
           <div className="flex items-center gap-2">
-            <Banknote className="w-5 h-5 text-white" />
+            <Banknote className="w-5 h-5 text-amber-300" />
             <h3 className="font-bold text-sm">Slip Gaji Karyawan (Resmi & Rahasia)</h3>
           </div>
           <button
             onClick={handleClose}
-            className="p-1 hover:bg-red-800 rounded-lg text-white/80 hover:text-white"
+            className="p-1 hover:bg-stone-800 rounded-lg text-stone-300 hover:text-white transition focus:outline-none focus:ring-1 focus:ring-stone-400"
+            aria-label="Tutup"
           >
             <X className="w-5 h-5" />
           </button>
@@ -68,16 +86,17 @@ export const PrintSlipGajiModal: React.FC<PrintSlipGajiModalProps> = ({
 
         {/* Printable Slip Gaji Canvas */}
         <div className="p-6 overflow-y-auto bg-stone-50 text-stone-900">
-          <div className="bg-white p-6 rounded-xl shadow border border-stone-300 font-sans space-y-4">
+          <div className="bg-white p-6 rounded-xl shadow-xs border border-stone-300 font-sans space-y-4 tabular-nums">
             {/* Header Title */}
-            <div className="text-center border-b-2 border-red-600 pb-3">
-              <h2 className="text-lg font-black text-red-700 uppercase tracking-wide">
-                RUMAH JAJANAN LASHIRA
+            <div className="text-center border-b-2 border-[#991B1B] pb-3">
+              <h2 className="text-lg font-black text-[#991B1B] uppercase tracking-wide">
+                RUMAH JAJAN ALSHAIRA
               </h2>
-              <p className="text-xs text-stone-600 font-semibold">
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-medium">by haber group</p>
+              <p className="text-xs text-stone-600 font-semibold mt-0.5">
                 SLIP GAJI & TUNJANGAN KARYAWAN
               </p>
-              <p className="text-[11px] text-stone-500">
+              <p className="text-[11px] text-stone-500 font-mono">
                 Periode: <span className="font-bold text-stone-800">{payroll.periodMonth || '-'}</span> | No: {payroll.payrollNumber || '-'}
               </p>
             </div>

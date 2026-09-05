@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Printer, X } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
@@ -17,8 +17,6 @@ export const PrintReceiptModal: React.FC<PrintReceiptModalProps> = ({
 
   const sale = propSale !== undefined ? propSale : selectedSaleForPrint;
 
-  if (!sale) return null;
-
   const handleClose = () => {
     if (propOnClose) {
       propOnClose();
@@ -27,22 +25,42 @@ export const PrintReceiptModal: React.FC<PrintReceiptModalProps> = ({
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  if (!sale) return null;
+
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh]">
+    <div
+      role="dialog"
+      aria-modal="true"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-150"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden border border-stone-200 flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-150">
         {/* Header Action Bar */}
         <div className="p-4 bg-stone-900 text-white flex items-center justify-between no-print">
           <div className="flex items-center gap-2">
-            <Printer className="w-5 h-5 text-red-400" />
+            <Printer className="w-5 h-5 text-amber-300" />
             <h3 className="font-bold text-sm">Cetak Struk Kasir (Thermal 58/80mm)</h3>
           </div>
           <button
             onClick={handleClose}
-            className="p-1 hover:bg-stone-800 rounded-lg text-stone-300 hover:text-white"
+            className="p-1 hover:bg-stone-800 rounded-lg text-stone-300 hover:text-white transition focus:outline-none focus:ring-1 focus:ring-stone-400"
+            aria-label="Tutup"
           >
             <X className="w-5 h-5" />
           </button>
@@ -52,16 +70,17 @@ export const PrintReceiptModal: React.FC<PrintReceiptModalProps> = ({
         <div className="p-6 overflow-y-auto bg-stone-100 flex items-center justify-center">
           <div
             id="printable-receipt"
-            className="bg-white p-6 rounded shadow-sm border border-stone-200 w-full max-w-[340px] text-stone-900 font-mono text-xs leading-relaxed"
+            className="bg-white p-6 rounded shadow-sm border border-stone-200 w-full max-w-[340px] text-stone-900 font-mono text-xs leading-relaxed tabular-nums"
           >
             {/* Store Branding */}
             <div className="text-center pb-3 border-b border-dashed border-stone-400">
               <h2 className="font-black text-base uppercase tracking-wider text-stone-900">
-                RUMAH JAJANAN LASHIRA
+                RUMAH JAJAN ALSHAIRA
               </h2>
+              <p className="text-[10px] text-slate-500 uppercase tracking-widest font-medium">by haber group</p>
               <p className="text-[11px] font-bold text-stone-600 mt-0.5">{sale.branchName}</p>
               <p className="text-[10px] text-stone-500">Pusat Oleh-Oleh & Snack Gurih Pedas</p>
-              <p className="text-[10px] text-stone-500">Hotline/WA: 0812-3456-7890</p>
+              <p className="text-[10px] text-stone-500 font-mono">Hotline/WA: 0812-3456-7890</p>
             </div>
 
             {/* Meta Details */}
