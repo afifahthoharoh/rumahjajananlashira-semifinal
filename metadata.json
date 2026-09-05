@@ -1,0 +1,6 @@
+{
+  "name": "RumahJajananLashira ERP",
+  "description": "Sistem ERP & POS Modern Terintegrasi untuk UMKM Makanan Ringan RumahJajananLashira dengan Multi-Cabang, Manajemen Stok, HPP, Produksi, Distribusi, Absensi & Payroll.",
+  "requestFramePermissions": ["camera", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
